@@ -27,10 +27,10 @@ kramdown:
 # Site owner
 owner:
   name: Chu Xiaotian
-  avatar: bio-photo.jpg
+  avatar: avatar.jpg
   bio: "Remember that day, remember that feel."
   email: theron.chu@gmail.com
-  disqus-shortname: XCHU-CHN
+  disqus-shortname: CHN-XCHU
   facebook: theron.chu@gmail.com
   google:
     plus: theron.chu@gmail.com
