@@ -1,0 +1,15 @@
+{% include _head.html %} {% include _browser-upgrade.html %} {% include _navigation.html %} {% if page.image.feature %}
+￼ {% if page.image.credit %} Photo Credit: {{ page.image.credit }} {% endif %} 
+{% endif %}
+{% include _author-bio.html %} 
+Recent Posts
+{% for post in site.posts limit:5 %}
+{% if post.link %}
+{{ post.title }} 
+{% else %}
+{{ post.title }}
+{{ post.excerpt | strip_html | truncate: 160 }}
+{% endif %} 
+{% endfor %} 
+{% include _footer.html %} 
+{% include _scripts.html %} 
