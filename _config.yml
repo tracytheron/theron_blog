@@ -31,10 +31,10 @@ owner:
   bio: "Remember that day, remember that feel."
   email: theron.chu@gmail.com
   disqus-shortname: XCHU-CHN
-  twitter: theron.chu@gmail.com
-  facebook: tracytheron
+  twitter: 
+  facebook: theron.chu@gmail.com
   google:
-    plus: #username
+    plus: theron.chu@gmail.com
     analytics: 
     verify: 
     ad-client: 
@@ -44,7 +44,7 @@ owner:
   stackoverflow: http://stackoverflow.com/users/1921007/tracy-theron
   linkedin: #username
   xing: #username
-  instagram: #username
+  instagram: tracytheron
   lastfm: #username
   tumblr: #username
   pinterest: #username
