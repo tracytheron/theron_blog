@@ -1,6 +1,6 @@
 # Site wide configuration
 
-title:            Site Title
+title:            Theron's Blog
 locale:           en_US
 url:              
 
@@ -26,13 +26,13 @@ kramdown:
 
 # Site owner
 owner:
-  name: Your Name
+  name: Chu Xiaotian
   avatar: bio-photo.jpg
-  bio: "Describe your self."
-  email: 
-  disqus-shortname: 
-  twitter: #username
-  facebook: #username
+  bio: "Remember that day, remember that feel."
+  email: theron.chu@gmail.com
+  disqus-shortname: XCHU-CHN
+  twitter: theron.chu@gmail.com
+  facebook: tracytheron
   google:
     plus: #username
     analytics: 
@@ -40,8 +40,8 @@ owner:
     ad-client: 
     ad-slot: 
   bing-verify: 
-  github: #username
-  stackoverflow: #http://stackoverflow.com/users/123456/username
+  github: tracytheron
+  stackoverflow: http://stackoverflow.com/users/1921007/tracy-theron
   linkedin: #username
   xing: #username
   instagram: #username
@@ -53,7 +53,7 @@ owner:
   dribbble: #username
   youtube: #username
   soundcloud: #username
-  weibo: #username
+  weibo: keylovelock
   flickr: #username
 
 include: [".htaccess"]
