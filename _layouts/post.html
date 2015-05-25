@@ -1,0 +1,25 @@
+{% include _head.html %} {% include _browser-upgrade.html %} {% include _navigation.html %} {% if page.image.feature %}
+￼ {% if page.image.credit %} Photo Credit: {{ page.image.credit }} {% endif %} 
+{% endif %}
+{% include _author-bio.html %} 
+{% if page.link %}
+{{ page.title }}
+{% else %}
+{{ page.title }}
+{% endif %} 
+{{ content }}
+
+{% if page.share != false %}{% include _social-share.html %}{% endif %}
+{{ page.title }} was published on {{ page.date | date: "%B %d, %Y" }}{% if page.modified %} and last modified on {{ page.modified | date: "%B %d, %Y" }}{% endif %}.
+{% if site.owner.disqus-shortname and page.comments == true %}
+
+{% endif %} 
+{% if site.related_posts.size > 0 %}
+You might also enjoy (View all posts)
+	•	{% for post in site.related_posts limit:3 %}
+	•	{{ post.title }}
+	•	{% endfor %} 
+
+{% endif %}
+{% include _footer.html %} 
+{% include _scripts.html %} 
