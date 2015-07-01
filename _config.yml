@@ -16,15 +16,13 @@ tagline: Site Tagline
 lang: en
 footerDetail: true
 author :
-  name : Name Lastname
+  name : Theron Chu/CHN
   avatar : false
   introduction : "A brief introduction should be placed here, in order to make the author known well to the reader"
-  email : user@email.test
-  github : username
-  twitter : username
-  gitcafe: username
-  weibo : weiboID
-  facebook : username
+  email : theron.chu@gmail.com
+  github : tracytheron
+  weibo : keylovelock
+  facebook : tracytheron
 
 # The production_url is only used when full-domain names are needed
 # such as sitemap.txt 
