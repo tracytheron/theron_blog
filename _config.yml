@@ -11,14 +11,14 @@ kramdown:
 # Themes are encouraged to use these universal variables 
 # so be sure to set them if your theme uses them.
 #
-title : Jekyll Materiallize
+title : Theron
 tagline: Site Tagline
 lang: en
 footerDetail: true
 author :
   name : Theron Chu/CHN
   avatar : false
-  introduction : "A brief introduction should be placed here, in order to make the author known well to the reader"
+  introduction : "Remember That Feel. Remember The Date."
   email : theron.chu@gmail.com
   github : tracytheron
   weibo : keylovelock
