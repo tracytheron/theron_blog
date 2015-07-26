@@ -1,6 +1,6 @@
 ---
 layout: page
-title: I AM YOUNG
+title: Home
 tagline: The most popular papers
 group: navigation
 position: 1
