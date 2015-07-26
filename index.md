@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Home
-tagline:  XXX
+tagline:  
 group: navigation
 position: 1
 ---
