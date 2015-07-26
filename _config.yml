@@ -11,7 +11,7 @@ kramdown:
 # Themes are encouraged to use these universal variables 
 # so be sure to set them if your theme uses them.
 #
-title : Key&Lock
+title : I AM YOUNG
 tagline: Site Tagline
 lang: en
 footerDetail: true
@@ -87,7 +87,7 @@ JB :
   comments :
     provider : disqus
     disqus :
-      short_name : jekyllmateriallize
+      short_name : theron
     livefyre :
       site_id : 123
     intensedebate :
