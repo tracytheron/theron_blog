@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Home
-tagline: The most popular papers
+tagline: 
 group: navigation
 position: 1
 ---
