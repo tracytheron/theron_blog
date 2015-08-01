@@ -63,10 +63,6 @@
     
   
     
-  
-    
-  
-    
       
           
           <li><a href="/index.html" lang="HOME"></a></li>
@@ -109,10 +105,6 @@
                   
 
 
-  
-    
-  
-    
   
     
   
@@ -168,14 +160,16 @@
 <h5 id="section">一. 本地代理</h5>
 <p>举个小例子，我是曼联的球迷，曼联新赛季加油啊！我想看英超2015赛季首轮比赛，我想知道曼联和热刺的比分。但是妈妈说：“你还有很多作业没完成，不能看，我会替你去现场看，如果你想知道比分，我就把比分告诉你。” 这样，比赛对我来说是不可见的，而是由我妈来进行了代理，当我想知道比分的时候，让我妈来告诉我比分。我妈也就控制了我对比赛的访问。</p>
 
-<p>首先，得有一个比赛实体Match，内部有主客队比分。<br />
-	public class Match {<br />
-		private String score;<br />
-		public Match(String score){<br />
-			this.score = score;<br />
-		}<br />
-		//getter and setter of score<br />
-	}</p>
+<p>首先，得有一个比赛实体Match，内部有主客队比分。</p>
+
+<pre><code>public class Match {
+	private String score;
+	public Match(String score){
+		this.score = score;
+	}
+	//getter and setter of score
+}
+</code></pre>
 
 <p>然后，得有比赛的代理，或者说是比赛的监控者Mother，她负责接收比赛，从而告诉我比分。</p>
 
@@ -209,17 +203,27 @@
 <p>普及一下实现远程方法调用，一共有四个角色，客户对象Client，客户辅助对象Stub，服务辅助对象Skeleton，服务对象Server。<br />
 远程方法调用的流程是这样的：Client向Stub发出doSomething的请求，Stub告诉Skeleton我想要doSomething，Skeleton真正的让Server去doSomething，Server把doSomething的结果返回给Skeleton，Skeleton再把结果通过网络返回给Stub，Stub把结果返回给Client，在Client看来，doSomething就是Stub做的一样。</p>
 
-<p>创建远程方法调用有以下步骤：<br />
-* 1.创建远程接口<br />
-创建一个远程接口，这个接口内的方法，客户端和服务器端都得实现这个接口。<br />
-* 2.实现远程接口<br />
-也就是真真正正的doSomething。<br />
-* 3.执行rmic，产生stub和skeleton<br />
-使用rmic工具来实现客户辅助对象Stub和服务辅助对象Skeleton。而在Java 5以后，不再需要rmic。<br />
-* 4.执行rmiregistry<br />
-cd到classes目录，使用rmiregistry来注册这个远程方法调用。<br />
-* 5.启动服务<br />
-开启远程服务</p>
+<p>创建远程方法调用有以下步骤：</p>
+
+<p><strong>1.创建远程接口</strong></p>
+
+<p>创建一个远程接口，这个接口内的方法，客户端和服务器端都得实现这个接口。</p>
+
+<p><strong>2.实现远程接口</strong></p>
+
+<p>也就是真真正正的doSomething。</p>
+
+<p><strong>3.执行rmic，产生stub和skeleton</strong></p>
+
+<p>使用rmic工具来实现客户辅助对象Stub和服务辅助对象Skeleton。而在Java 5以后，不再需要rmic。</p>
+
+<p><strong>4.执行rmiregistry</strong></p>
+
+<p>cd到classes目录，使用rmiregistry来注册这个远程方法调用。</p>
+
+<p><strong>5.启动服务</strong></p>
+
+<p>开启远程服务</p>
 
 <pre><code>Naming.bind("//IP地址or主机名/注册的名字", 远程对象);
 </code></pre>
@@ -229,9 +233,9 @@ cd到classes目录，使用rmiregistry来注册这个远程方法调用。<br />
 <pre><code>Naming.lookup("//IP地址or主机名/注册的名字");
 </code></pre>
 
-<h6 id="step-by-step">让我们回到看比赛的例子Step by Step</h6>
+<h5 id="step-by-step">让我们回到看比赛的例子Step by Step</h5>
 
-<h6 id="section-2">服务端实现步骤：</h6>
+<p><strong>服务端实现步骤：</strong></p>
 
 <p>第一步：<br />
 创建远程接口</p>
@@ -283,8 +287,8 @@ cd到classes，并执行rmiregistry完成注册。</p>
 }
 </code></pre>
 
-<h6 id="section-3">客户端实现步骤：</h6>
-<p>改造原有的Mother类，因为有网络，就必定有异常，看电视，就有可能信号不好。</p>
+<p><strong>客户端实现步骤：</strong><br />
+改造原有的Mother类，因为有网络，就必定有异常，看电视，就有可能信号不好。</p>
 
 <pre><code>public class Mother {
 	private MatchRemoteInterface match;
@@ -317,7 +321,7 @@ cd到classes，并执行rmiregistry完成注册。</p>
 }
 </code></pre>
 
-<h5 id="section-4">三. 虚拟代理</h5>
+<h5 id="section-2">三. 虚拟代理</h5>
 <p>虚拟代理相对比较好理解，用上面看球的例子也可以解释。场景是这样的，我在比赛刚开场5分钟的时候，就问我妈妈，比赛的最终结果是什么？这种场景下，Mother就不能直接返回当前的比分，因为我想知道的是最终结果，也就是说，这场90分钟的比赛是一个开销较大的对象，你只有等他创建完（比赛完）才能访问真正的对象。所以，Mother这时可以返回一个“正在比赛中”的消息，来告知她所代理的对象还在创建中。当对象创建完成后，才把真正要做的事情交给真正的对象去做。可见，使用虚拟代理一般只有在需要访问某个对象的时候才开始创建这个开销比较大的对象，而虚拟代理一般都能返回多种状态。</p>
 
 <p>我们稍微修改一下本地代理的代码：<br />
@@ -365,7 +369,7 @@ cd到classes，并执行rmiregistry完成注册。</p>
 
 <p>当Mother获得match并没有构建完成时，Mother就会告诉我，比赛进行中，否则，就会把控制权交给match,让match来tellMe比赛的结果。</p>
 
-<h5 id="section-5">四. 动态代理</h5>
+<h5 id="section-3">四. 动态代理</h5>
 <p>动态代理的概念是指代理在运行时创建的。利用Java的Proxy类和InvocationHandler接口来动态创建代理。</p>
 
 <p>举个例子，Alice是一个经纪人。</p>
@@ -505,17 +509,17 @@ public class NotOwnerInvocationHandler implements InvocationHandler {
 
 <p>可见，动态代理保护了Alice这个实体的安全性，所以，动态代理也被成为保护代理。</p>
 
-<h5 id="section-6">小结</h5>
+<h5 id="section-4">小结</h5>
 <p>上面介绍了几种代理模式，当然其实还有很多其他的变种，例如缓存代理、同步代理等。代理模式用于对访问对象的控制，对真正的对象进行控制访问，有时加以限制保护，有时加以利用扩展。</p>
 
-<h6 id="glory-glory-manunited">希望曼联这个赛季能顺利一些！Glory Glory ManUnited!</h6>
+<p><strong>希望曼联这个赛季能顺利一些！Glory Glory ManUnited!</strong></p>
 
 
         <div class="right-align pagination-group">
             
-                <a href="/tutorial/2015/04/10/template" class="btn waves-effect waves-light blue lighten-2" style="border-top-right-radius: 0; border-bottom-right-radius: 0;">
-                    &larr; <span lang="PREVIOUS_BTN"></span>
-                </a>
+            <a class="btn disabled" style="border-top-right-radius: 0; border-bottom-right-radius: 0;">
+                &larr; <span lang="PREVIOUS_BTN"></span>
+            </a>
             
                 <a href="/archive.html" class="btn waves-effect waves-light blue" style="border-radius: 0;" lang="ARCHIVE_BTN"></a>
             

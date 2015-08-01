@@ -79,10 +79,11 @@ ul > li{
 
 code{
     padding: 3px 5px;
-    background-color: #e57373;
+    background-color: #fff;
     border-radius: 2px;
-    color: #fff;
-    font-style: italic;
+    color: #9c27b0;
+   
+    font-size:0.8em
 }
 pre[class*="language-"] code[class*="language-"]{
     padding: 0;
