@@ -1,0 +1,651 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+    <title>I AM YOUNG</title>
+
+    
+
+    <meta name="author" content="Theron Chu/CHN">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimal-ui"/>
+
+    
+    <base href="/">
+    
+
+    <!-- materiallize styles -->
+    <link href="/assets/themes/materiallize/css/materialize.min.css" rel="stylesheet">
+    <!-- fontawesome styles -->
+    <link href="/assets/themes/materiallize/css/font-awesome.min.css" rel="stylesheet">
+    <!-- tooltipster styles -->
+    <link href="/assets/themes/materiallize/css/tooltipster.css" rel="stylesheet">
+    <!-- prism styles -->
+    <link href="/assets/themes/materiallize/css/prism.css" rel="stylesheet">
+    
+    <!-- Custom styles -->
+    <link href="/assets/themes/materiallize/css/style.css" rel="stylesheet" type="text/css" media="all">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="/assets/themes/materiallize/js/html5shiv.js"></script>
+      <script src="/assets/themes/materiallize/js/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <link rel="shortcut icon" href="/assets/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/assets/images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/assets/images/apple-touch-icon-114x114.png">
+    
+    <!-- modernizr -->
+    <script type="text/javascript" src="/assets/themes/materiallize/js/modernizr.js"></script>
+
+  </head>
+
+  <body>
+
+      <nav class="light-blue lighten-1" role="navigation">
+          <div class="nav-wrapper container">
+              <a id="logo-container" href="/" class="brand-logo">I AM YOUNG</a>
+              <ul class="right hide-on-med-and-down">
+                  
+                  
+                  
+
+
+  
+    
+  
+    
+  
+    
+  
+    
+      
+          
+          <li><a href="/index.html" lang="HOME"></a></li>
+          
+      
+    
+  
+    
+      
+          
+          <li><a href="/archive.html" lang="ARCHIVE"></a></li>
+          
+      
+    
+  
+    
+      
+          
+          <li><a href="/categories.html" lang="CATEGORIES"></a></li>
+          
+      
+    
+  
+    
+      
+          
+          <li><a href="/tags.html" lang="TAGS"></a></li>
+          
+      
+    
+  
+
+
+
+              </ul>
+
+              <ul id="nav-mobile" class="side-nav">
+                  
+                  
+                  
+
+
+  
+    
+  
+    
+  
+    
+  
+    
+      
+          
+          <li><a href="/index.html" lang="HOME"></a></li>
+          
+      
+    
+  
+    
+      
+          
+          <li><a href="/archive.html" lang="ARCHIVE"></a></li>
+          
+      
+    
+  
+    
+      
+          
+          <li><a href="/categories.html" lang="CATEGORIES"></a></li>
+          
+      
+    
+  
+    
+      
+          
+          <li><a href="/tags.html" lang="TAGS"></a></li>
+          
+      
+    
+  
+
+
+
+              </ul>
+              <a href="#" data-activates="nav-mobile" class="button-collapse right"><i class="mdi-navigation-menu"></i></a>
+          </div>
+      </nav>
+      
+      <main>
+          <div class="container">
+              
+<div class="row">
+    <div class="col s12 m8">
+        <h2><small>我眼中的代理模式</small></h2>
+        
+<p>我理解的代理模式的目的是为了控制对象访问。它可以大致有下面几类，分别是本地代理、远程代理、虚拟代理和动态代理，另外还有很多变种。</p>
+
+<h5 id="section">一. 本地代理</h5>
+<p>举个小例子，我是曼联的球迷，曼联新赛季加油啊！我想看英超2015赛季首轮比赛，我想知道曼联和热刺的比分。但是妈妈说：“你还有很多作业没完成，不能看，我会替你去现场看，如果你想知道比分，我就把比分告诉你。” 这样，比赛对我来说是不可见的，而是由我妈来进行了代理，当我想知道比分的时候，让我妈来告诉我比分。我妈也就控制了我对比赛的访问。</p>
+
+<p>首先，得有一个比赛实体Match，内部有主客队比分。<br />
+	public class Match {<br />
+		private String score;<br />
+		public Match(String score){<br />
+			this.score = score;<br />
+		}<br />
+		//getter and setter of score<br />
+	}</p>
+
+<p>然后，得有比赛的代理，或者说是比赛的监控者Mother，她负责接收比赛，从而告诉我比分。</p>
+
+<pre><code>public class Mother {
+	private Match match;
+	public Mother(Match match){
+		this.match = match;
+	}
+	public void tellMe(){
+		System.out.println(match.getScore());
+	}
+}
+</code></pre>
+
+<p>最后,当Mother接收到比赛的时候，她就能够把比赛的结果输出。</p>
+
+<pre><code>public class Main {
+	public static void main(String[] args) {
+		Match match = new Match("3:1");
+		Mother mother = new Mother(match);
+		mother.tellMe();
+	}
+}
+</code></pre>
+
+<h5 id="section-1">二. 远程代理</h5>
+<p>但是，事实是残酷的，我家穷，去不了现场。我妈说，你还是好好做作业，我在电视机上看，同样告诉你比分。这里，可以看到本地代理和远程代理的区别了，本地代理中，比赛Match和监控者Mother在本地，而远程代理中，比赛Match在遥远的英国，在比赛和我妈之间，又出现了一个新的远程对象的本地代表——电视机。电视机作为比赛的代理来被我妈来监控。但在我看来，我妈依旧是我妈，依旧是从我妈妈口中获得比分，好像我妈真的在现场一样。</p>
+
+<p>整理一下思路，我们要写一个本地的调用方法，让后传到网络上去，然后调用远程对象的某些方法。这里涉及到Java的RMI（Remote Method Invocation），Java的远程方法调用。</p>
+
+<p>普及一下实现远程方法调用，一共有四个角色，客户对象Client，客户辅助对象Stub，服务辅助对象Skeleton，服务对象Server。<br />
+远程方法调用的流程是这样的：Client向Stub发出doSomething的请求，Stub告诉Skeleton我想要doSomething，Skeleton真正的让Server去doSomething，Server把doSomething的结果返回给Skeleton，Skeleton再把结果通过网络返回给Stub，Stub把结果返回给Client，在Client看来，doSomething就是Stub做的一样。</p>
+
+<p>创建远程方法调用有以下步骤：<br />
+* 1.创建远程接口<br />
+创建一个远程接口，这个接口内的方法，客户端和服务器端都得实现这个接口。<br />
+* 2.实现远程接口<br />
+也就是真真正正的doSomething。<br />
+* 3.执行rmic，产生stub和skeleton<br />
+使用rmic工具来实现客户辅助对象Stub和服务辅助对象Skeleton。而在Java 5以后，不再需要rmic。<br />
+* 4.执行rmiregistry<br />
+cd到classes目录，使用rmiregistry来注册这个远程方法调用。<br />
+* 5.启动服务<br />
+开启远程服务</p>
+
+<pre><code>Naming.bind("//IP地址or主机名/注册的名字", 远程对象);
+</code></pre>
+
+<p>客户端调用远程方法的方式：</p>
+
+<pre><code>Naming.lookup("//IP地址or主机名/注册的名字");
+</code></pre>
+
+<h6 id="step-by-step">让我们回到看比赛的例子Step by Step</h6>
+
+<h6 id="section-2">服务端实现步骤：</h6>
+
+<p>第一步：<br />
+创建远程接口</p>
+
+<pre><code>public interface MatchRemoteInterface extends Remote{
+	public String tellMe() throws RemoteException;//返回的参数一定是Serializable,并必须抛出RemoteException
+}
+</code></pre>
+
+<p>第二步：<br />
+实现远程接口</p>
+
+<pre><code>public class MatchRemote extends UnicastRemoteObject implements
+	MatchRemoteInterface {
+	private static final long serialVersionUID = -8990660014833749798L;
+	private String score;
+
+	protected MatchRemote(String score) throws RemoteException {
+		this.score = score;
+	}
+
+	@Override
+	public String tellMe() {
+		return this.score;
+	}
+}
+</code></pre>
+
+<p>第三步：<br />
+执行rmic MatchRemote 来生成服务端的skeleton，即服务辅助对象。</p>
+
+<p>第四步：<br />
+注册远程服务<br />
+cd到classes，并执行rmiregistry完成注册。</p>
+
+<p>第五步：<br />
+编写启动服务的代码并启动</p>
+
+<pre><code>public class RemoteServer {
+	public static void main(String[] args) {
+		MatchRemote matchRemote = null;
+		try {
+			matchRemote = new MatchRemote("3:1");
+			Naming.bind("//127.0.0.1/MatchRemote", matchRemote);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
+</code></pre>
+
+<h6 id="section-3">客户端实现步骤：</h6>
+<p>改造原有的Mother类，因为有网络，就必定有异常，看电视，就有可能信号不好。</p>
+
+<pre><code>public class Mother {
+	private MatchRemoteInterface match;
+	public Mother(MatchRemoteInterface match){
+		this.match = match;
+	}
+	public void tellMe(){
+		try {
+			System.out.println(match.tellMe());
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+	}
+}
+</code></pre>
+
+<p>改造原来的Main方法,原来的Mother的参数是本地取得的Match，而现在，Mother的参数是从网络获得的MatchRemote</p>
+
+<pre><code>public class Main {
+	public static void main(String[] args) {
+		try {
+			MatchRemote matchRemote = (MatchRemote) Naming.lookup("//127.0.0.1/MatchRemote");
+			Mother mother = new Mother(matchRemote);
+			mother.tellMe();
+		}catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+}
+</code></pre>
+
+<h5 id="section-4">三. 虚拟代理</h5>
+<p>虚拟代理相对比较好理解，用上面看球的例子也可以解释。场景是这样的，我在比赛刚开场5分钟的时候，就问我妈妈，比赛的最终结果是什么？这种场景下，Mother就不能直接返回当前的比分，因为我想知道的是最终结果，也就是说，这场90分钟的比赛是一个开销较大的对象，你只有等他创建完（比赛完）才能访问真正的对象。所以，Mother这时可以返回一个“正在比赛中”的消息，来告知她所代理的对象还在创建中。当对象创建完成后，才把真正要做的事情交给真正的对象去做。可见，使用虚拟代理一般只有在需要访问某个对象的时候才开始创建这个开销比较大的对象，而虚拟代理一般都能返回多种状态。</p>
+
+<p>我们稍微修改一下本地代理的代码：<br />
+为了让代理的对象和代理看上去一样，我们定义一个接口，这样，感觉就像自己在看比赛一样。</p>
+
+<pre><code>public interface IMatch{
+	public void tellMe();
+}
+</code></pre>
+
+<p>改造Match类</p>
+
+<pre><code>public class Match implements IMatch{
+	private String score;
+	public Match(String score){
+		this.score = score;
+	}
+	
+	@Override
+	public void tellMe(){
+		System.out.printlen(score);
+	}
+}
+</code></pre>
+
+<p>改造Mother类</p>
+
+<pre><code>public class Mother implements IMatch {
+	private Match match;
+	
+	public Mother(Match match){
+		this.match = match;
+	}
+		
+	@Override
+	public void tellMe(){
+		if(match != null){
+			match.tellMe();
+		}else{
+			System.out.println("比赛进行中");
+		}
+	}
+}
+</code></pre>
+
+<p>当Mother获得match并没有构建完成时，Mother就会告诉我，比赛进行中，否则，就会把控制权交给match,让match来tellMe比赛的结果。</p>
+
+<h5 id="section-5">四. 动态代理</h5>
+<p>动态代理的概念是指代理在运行时创建的。利用Java的Proxy类和InvocationHandler接口来动态创建代理。</p>
+
+<p>举个例子，Alice是一个经纪人。</p>
+
+<p>她可以做的事情，分别为查看自己的名字和别人对我的评价，修改自己的名字和对他人进行评价；<br />
+她不能做的事情，分别为修改别人的名字和对自己进行评价。</p>
+
+<p>首先，需要有一个接口，里面包括所有的操作，如下：</p>
+
+<pre><code>public interface IAgentEntity{
+	public String getName();//查看名字
+	public void setName(String name);//修改名字
+	public int getScore();//查看评价
+	public void setScore(int score);//修改评价
+}
+</code></pre>
+
+<p>第二，实现真正的实体类和代理类</p>
+
+<pre><code>//这是真正的实体类
+public class AgentDetailEntity implements IAgentEntity{
+	private String name;
+	private int score;
+	public AgentDetailEntity(String name,int score){
+		this.name = name;
+		this.score = score;
+	}	
+	
+	@Override
+	public String getName() {
+		return name;
+	}
+	
+	@Override
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Override
+	public int getScore() {
+		return score;
+	}
+
+	@Override
+	public void setScore(int score) {
+		this.score = score;
+	}
+}
+</code></pre>
+
+<p>关键在于代理类如何产生。我们知道，IAgentEntity有所为有所不为。也就是有Owner的代理类，也有非Owner的代理类。即当经纪人Alice自己使用自己这个实体的时候，她应该使用Owner代理类，Owner代理类中对她的行为进行了限制，比如不能修改比人的名字和修改自己的评价。而当别人使用这个实体时，就应该分配给他非Owner的代理类，同样做了些限制，比如不能修改Alice的名字。</p>
+
+<p>Proxy用来创建不同风格的代理类，InvocationHandler来实现代理的行为，在InvocationHandler中定义了哪个方法“可为”，哪个方法“不可为”，在我看来，InvocationHandler算是真正的代理。</p>
+
+<p>我们定义两种InvocationHandler，分别为OwnerInvocationHandler和NotOwnerInvocationHandler.</p>
+
+<pre><code>public class OwnerInvocationHandler implements InvocationHandler {
+	private IAgentEntity agentEntity;	
+	public OwnerInvocationHandler(IAgentEntity agentEntity) {
+		this.agentEntity = agentEntity;
+	}
+
+	@Override
+	public Object invoke(Object proxy, Method method, Object[] args)
+			throws IllegalAccessException {
+		try {
+			if (method.getName().equals("setScore")) {//当是本人时，不能修改评价
+				throw new IllegalAccessException();
+			} else {
+				method.invoke(agentEntity, args);//合法，就调用agentEntity的方法
+			}
+		}catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+}
+
+public class NotOwnerInvocationHandler implements InvocationHandler {
+	private IAgentEntity agentEntity;
+
+	public NotOwnerInvocationHandler(IAgentEntity agentEntity) {
+		this.agentEntity = agentEntity;
+	}
+
+	@Override
+	public Object invoke(Object proxy, Method method, Object[] args)
+			throws IllegalAccessException {
+		try {
+			if (method.getName().equals("setName")) {//当是他人时，不能修改名字
+				throw new IllegalAccessException();
+			} else {
+				method.invoke(agentEntity, args);//合法，就调用agentEntity的方法				}
+		}catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+}
+</code></pre>
+
+<p>上面是两类InvocationHandler，相应的，需要产生两类Proxy，由Proxy类的Proxy.newProxyInstance(ClassLoader loader,Class&lt;?&gt;[] interfaces,InvocationHandler h)产生。</p>
+
+<pre><code>	private IAgentEntity getOwnerProxy(IAgentEntity agentEntity){
+		return (IAgentEntity) Proxy.newProxyInstance(agentEntity.getClass().getClassLoader(),
+		 agentEntity.getClass().getInterfaces(), 
+		 new OwnerInvocationHandler(agentEntity));
+	}
+		
+	private IAgentEntity getNotOwnerProxy(IAgentEntity agentEntity){
+		return (IAgentEntity) Proxy.newProxyInstance(agentEntity.getClass().getClassLoader(),
+		 agentEntity.getClass().getInterfaces(),
+		 new NotOwnerInvocationHandler(agentEntity));
+	}
+</code></pre>
+
+<p>测试一下：</p>
+
+<pre><code>	IAgentEntity Alice = new AgentDetailEntity("Alice",10);//创建一个Alice实体
+	IAgentEntity ownerProxy = getOwnerProxy(Alice);//获得一个Owner代理
+	IAgentEntity notOwnerProxy = getNotOwnerProxy(Alice);//获得一个非Owner代理
+	
+	try {
+		ownerProxy.setScore(-1);//Owner改变评价是不允许的
+	} catch (Exception e) {
+		e.printStackTrace();//会抛出IllegalAccessException
+	}
+	ownerProxy.setName("Bob");//Owner可以修改自己的名字
+	
+	try {
+		notOwnerProxy.setName("Bob");//非Owner不能修改名字
+	} catch (Exception e) {
+		e.printStackTrace();//会抛出IllegalAccessException
+	}
+	notOwnerProxy.setScore(-1);//非Owner可以对别人进行评价
+</code></pre>
+
+<p>可见，动态代理保护了Alice这个实体的安全性，所以，动态代理也被成为保护代理。</p>
+
+<h5 id="section-6">小结</h5>
+<p>上面介绍了几种代理模式，当然其实还有很多其他的变种，例如缓存代理、同步代理等。代理模式用于对访问对象的控制，对真正的对象进行控制访问，有时加以限制保护，有时加以利用扩展。</p>
+
+<h6 id="glory-glory-manunited">希望曼联这个赛季能顺利一些！Glory Glory ManUnited!</h6>
+
+
+        <div class="right-align pagination-group">
+            
+                <a href="/tutorial/2015/04/10/template" class="btn waves-effect waves-light blue lighten-2" style="border-top-right-radius: 0; border-bottom-right-radius: 0;">
+                    &larr; <span lang="PREVIOUS_BTN"></span>
+                </a>
+            
+                <a href="/archive.html" class="btn waves-effect waves-light blue" style="border-radius: 0;" lang="ARCHIVE_BTN"></a>
+            
+                <a class="btn disabled" style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
+                    <span lang="NEXT_BTN"></span> &rarr;
+                </a>
+            
+        </div>
+        
+        <br/>
+        <hr>
+
+        
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    
+    var disqus_developer = 1;
+    var disqus_shortname = 'theron'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+    </div>
+    <div class="col m4 hide-on-small-only">
+        <div class="card blue-grey darken-1 z-depth-2">
+            <div class="card-content white-text">
+              <span class="card-title">我眼中的代理模式</span>
+            </div>
+            <div class="card-action blue-grey lighten-4">
+                <span lang="CREATED_ON"></span> 2015-08-01
+            </div>
+        </div>
+
+        <div class="card-panel grey lighten-5 z-depth-2">
+            <div class="row valign-wrapper">
+                <div class="col s12">
+                    <i class="fa fa-server fa-lg grey-text text-darken-4"></i>&nbsp;&nbsp;<strong class="grey-text text-darken-4" lang="CATEGORIES"></strong>
+                    <hr>
+                    
+                      
+                      <a href="/categories.html#java-ref" class="waves-effect waves-light btn tag deep-orange">
+                          java&nbsp;1
+                      </a>
+                      
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="card-panel grey lighten-5 z-depth-2">
+            <div class="row valign-wrapper">
+                <div class="col s12">
+                    <i class="fa fa-flag fa-lg grey-text text-darken-4"></i>&nbsp;&nbsp;<strong class="grey-text text-darken-4" lang="TAGS"></strong>
+                    <hr>
+                    
+                      
+                      <a href="/tags.html#Java Pattern-ref" class="waves-effect waves-light btn tag deep-orange">
+                          Java Pattern&nbsp;1
+                      </a>
+                      
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+          </div>
+      </main>
+
+      <div class="goto-top hide-on-med-and-down">
+          <i class="fa fa-chevron-up fa-2x"></i>
+      </div>
+
+      <footer class="page-footer" >
+          
+          <div class="container">
+            <div class="row">
+              <div class="col s12">
+                <h5 class="white-text">Useful Links</h5>
+                <a class="btn waves-effect waves-light red lighten-3 left" href="https://github.com/tracytheron" style="text-transform:capitalize;" target="_new">Github
+                </a>
+                <a class="btn waves-effect waves-light green lighten-3 left" href="http://www.androidweekly.cn/" style="text-transform:capitalize;margin-left: 20px;" target="_new">Android Weekly
+                </a>
+                <a class="btn waves-effect waves-light indigo lighten-3 left" href="http://android-arsenal.com/" style="text-transform:capitalize;margin-left: 20px;" target="_new">Android Arsenal
+                </a>
+                <a class="btn waves-effect waves-light blue lighten-3 left" href="http://www.codekk.com/open-source-project-analysis" style="text-transform:capitalize;margin-left: 20px;" target="_new">CodeKK
+                </a>
+                <a class="btn waves-effect waves-light purple dark-3 left" href="http://design.1sters.com/" style="text-transform:capitalize;margin-left: 20px;" target="_new">Material Design(CN)
+                </a>
+                <a class="btn waves-effect waves-light orange dark-3 left" href="http://www.androiddocs.com/" style="text-transform:capitalize;margin-top: 20px;" target="_new">Android Docs(Offcial)
+                </a>
+                <a class="btn waves-effect waves-light brown left" href="https://leetcode.com/" style="text-transform:capitalize;margin-top: 20px;margin-left: 20px;" target="_new">LeetCode OJ
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          <div class="footer-copyright">
+            <div class="container">
+            &copy; 2015 Theron Chu/CHN, All rights reserved. Thanks to Jekyll-Materiallize
+            <a class="grey-text text-lighten-4 right" href="https://github.com/leftstick/jekyll-materiallize/blob/master/LICENSE">MIT License</a>
+            </div>
+          </div>
+      </footer>
+
+      
+
+
+
+      <!-- Placed at the end of the document so the pages load faster -->
+      <script src="/assets/themes/materiallize/js/jquery-2.1.3.min.js"></script>
+      <script src="/assets/themes/materiallize/js/materialize.min.js"></script>
+      <script src="/assets/themes/materiallize/js/jquery.tooltipster.min.js"></script>
+      <script src="/assets/themes/materiallize/js/prism.js"></script>
+      <script src="/assets/themes/materiallize/js/prism.clojure.js"></script>
+      <script src="/assets/lang/lang.js"></script>
+      <script src="/assets/themes/materiallize/js/init.js"></script>
+  </body>
+</html>
+
