@@ -1,0 +1,386 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+    <title>I AM YOUNG</title>
+
+    
+
+    <meta name="author" content="Theron Chu/CHN">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimal-ui"/>
+
+    
+    <base href="/">
+    
+
+    <!-- materiallize styles -->
+    <link href="/assets/themes/materiallize/css/materialize.min.css" rel="stylesheet">
+    <!-- fontawesome styles -->
+    <link href="/assets/themes/materiallize/css/font-awesome.min.css" rel="stylesheet">
+    <!-- tooltipster styles -->
+    <link href="/assets/themes/materiallize/css/tooltipster.css" rel="stylesheet">
+    <!-- prism styles -->
+    <link href="/assets/themes/materiallize/css/prism.css" rel="stylesheet">
+    
+    <!-- Custom styles -->
+    <link href="/assets/themes/materiallize/css/style.css" rel="stylesheet" type="text/css" media="all">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="/assets/themes/materiallize/js/html5shiv.js"></script>
+      <script src="/assets/themes/materiallize/js/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <link rel="shortcut icon" href="/assets/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/assets/images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/assets/images/apple-touch-icon-114x114.png">
+    
+    <!-- modernizr -->
+    <script type="text/javascript" src="/assets/themes/materiallize/js/modernizr.js"></script>
+
+  </head>
+
+  <body>
+
+      <nav class="light-blue lighten-1" role="navigation">
+          <div class="nav-wrapper container">
+              <a id="logo-container" href="/" class="brand-logo">I AM YOUNG</a>
+              <ul class="right hide-on-med-and-down">
+                  
+                  
+                  
+
+
+  
+    
+  
+    
+      
+          
+          <li><a href="/index.html" lang="HOME"></a></li>
+          
+      
+    
+  
+    
+      
+          
+          <li><a href="/archive.html" lang="ARCHIVE"></a></li>
+          
+      
+    
+  
+    
+      
+          
+          <li><a href="/categories.html" lang="CATEGORIES"></a></li>
+          
+      
+    
+  
+    
+      
+          
+          <li><a href="/tags.html" lang="TAGS"></a></li>
+          
+      
+    
+  
+
+
+
+              </ul>
+
+              <ul id="nav-mobile" class="side-nav">
+                  
+                  
+                  
+
+
+  
+    
+  
+    
+      
+          
+          <li><a href="/index.html" lang="HOME"></a></li>
+          
+      
+    
+  
+    
+      
+          
+          <li><a href="/archive.html" lang="ARCHIVE"></a></li>
+          
+      
+    
+  
+    
+      
+          
+          <li><a href="/categories.html" lang="CATEGORIES"></a></li>
+          
+      
+    
+  
+    
+      
+          
+          <li><a href="/tags.html" lang="TAGS"></a></li>
+          
+      
+    
+  
+
+
+
+              </ul>
+              <a href="#" data-activates="nav-mobile" class="button-collapse right"><i class="mdi-navigation-menu"></i></a>
+          </div>
+      </nav>
+      
+      <main>
+          <div class="container">
+              
+<div class="row">
+    <div class="col s12 m8">
+        <h2><small>TimeInterpolator</small></h2>
+        
+<p>在使用Animation的时候，我们经常可以看到TimeInterpolator，TimeInterpolator的中文意思是差值器，可以看做是动画的运行过程中的点缀。对了，以前版本有一个接口Interpolator，这两个是一样的，Interpolator直接继承了TimeInterpolator。</p>
+
+<h5 id="timeinterpolator">如何使用TimeInterpolator</h5>
+
+<p>TimeInterpolator一般都与动画进行使用，当然也有其他应用场景。使用方式如下，定义一个Animation，并设置它的setInterpolator(TimeInterpolator)即可。</p>
+
+<pre><code>Animation anim = new SomeAnimation(some parameters;
+anim.setDuration(duration);
+anim.setInterpolator(interpolator);
+someView.startAnimation(anim);
+</code></pre>
+
+<h5 id="timeinterpolator-1">TimeInterpolator的工作原理</h5>
+
+<p>Animation在设置了TimeInterpolator，开始startAnimation之后，Animation始终会根据当前运行时间和设置的运行时间相除，来返回input结果。如果我们并不设置TimeInterpolator，那么动画的走势即是线性的。通过TimeInterpolator可以改变这个input的值，并将我们所设置的函数走势返回，那么动画的运动轨迹就变得可控和有趣了。</p>
+
+<h5 id="timeinterpolator-2">如何制作自己的TimeInterpolator</h5>
+
+<p>昨天偶然看了drakeet的一篇博客，有关于呼吸灯的，看到里面有一个他从Google上找的呼吸函数，我想将它制作成一个TimeInterpolator应该不错哟。</p>
+
+<p>下面展示的是该呼吸函数</p>
+
+<p><img src="127.0.0.1:4000/assets/images/s2.png" alt="Alt text" /></p>
+
+<p>怎么样？看上去是不是很复杂？很厉害的样子。我跟着这个函数做了几下呼吸，感觉这个呼吸函数还是挺靠谱的。那我们就动手吧。</p>
+
+<p>我们知道实现TimeInterpolator接口，必须实现这个方法 float getInterpolation(float input);input的在动画的时间内，返回平均地0-1的float值，我们所要做的就是将这个input值和我们的函数对应起来。</p>
+
+<p>呼吸函数分为两部分，吸气和呼气，即y坐标0~1的递增和y坐标1~0的递减。这个函数和正弦函数sin很像，正如drakeet所说，如果用正弦函数来表述呼吸，那这个呼吸就有些急促，大家可以呼吸试一下。因此，吸气时间相对较短，大约占整个一个呼吸周期的1/3,而呼气则占2/3。所以，我们的input值中，0~1/3交给吸气函数，1/3~1交给呼气函数。</p>
+
+<p>首先，我们解决吸气函数，也就是图中第一个函数。</p>
+
+<p>它的x的取值范围是0~2，y的取值范围是0~1。图中的函数很复杂，是因为它包含N个周期，如果将它精简，函数为y=1/2sinA+1/2; 我将sin内部统一成A，那么我们的问题就简化了，也就是当x取值为0~1/3之间时，这个函数y的值为0~1。</p>
+
+<p>由于y的值是从0到1，那么可以知道，A的值为-π/2~π/2。</p>
+
+<p>也就可以列出下列方程组：</p>
+
+<pre><code>0*a+b=-π/2
+1/3*a+b=π/2
+</code></pre>
+
+<p>可以解出a=3π,b=-π/2，即y=1/2sin(3πx-π/2)</p>
+
+<p>所以，当input的值为0~1/3之间时，我们getInterpolation方法的返回函数应该是</p>
+
+<pre><code>0.5f+0.5f*Math.sin(input*3.0f*Math.PI-Math.PI*0.5f)
+</code></pre>
+
+<p>接着，我们再来解决当input为1/3~1之间的呼气函数。</p>
+
+<p>它的x的取值范围是2~6，y的取值范围是1~0。图中的函数很复杂，是因为它包含N个周期，如果将它精简，函数为y=(1/2sinA+1/2)^2；我将sin内部统一成A，那么我们的问题就再次简化了，也就是当x取值为1/3~1之间时，这个函数y的值为1~0。</p>
+
+<p>由于y的值是从1到0，那么可以知道，A的值为π/2~3π/2。</p>
+
+<p>也就可以列出下列方程组：</p>
+
+<pre><code>1/3*a+b=π/2
+1*a+b=3π/2
+</code></pre>
+
+<p>可以解出a=3π/2,b=0，即y=(1/2sin(3/2*πx)+1/2)^2</p>
+
+<p>所以，当input的值为1/3~1之间时，我们getInterpolation方法的返回函数应该是</p>
+
+<pre><code>Math.pow((0.5 * Math.sin(3f * Math.PI * input * 0.5f) + 0.5f), 2)
+</code></pre>
+
+<p>综上，整个BreathingInterpolator如下：</p>
+
+<pre><code>public class EaseBreathInterpolator implements TimeInterpolator {
+    public EaseBreathInterpolator() {}
+    public EaseBreathInterpolator(Context context, AttributeSet attrs) {}
+    public float getInterpolation(float input) {
+        if(input&lt;0.333){
+            return (float) (0.5f+0.5f*Math.sin(input*3.0f*Math.PI-Math.PI*0.5f));
+        }else{
+            return (float) Math.pow((0.5 * Math.sin(3f * Math.PI * input * 0.5f) + 0.5f), 2);
+        }      
+    }
+}
+</code></pre>
+
+<h5 id="section">小结</h5>
+
+<p>TimeInterpolator使我们的动画更加自然和动感，不过还是需要一些计算能力，当然自己写一个TimeInterpolator也是十分有趣的。</p>
+
+<h6 id="section-1">好热的天！</h6>
+
+
+
+        <div class="right-align pagination-group">
+            
+                <a href="/java/2015/08/01/%E6%88%91%E7%9C%BC%E4%B8%AD%E7%9A%84%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F" class="btn waves-effect waves-light blue lighten-2" style="border-top-right-radius: 0; border-bottom-right-radius: 0;">
+                    &larr; <span lang="PREVIOUS_BTN"></span>
+                </a>
+            
+                <a href="/archive.html" class="btn waves-effect waves-light blue" style="border-radius: 0;" lang="ARCHIVE_BTN"></a>
+            
+                <a class="btn disabled" style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
+                    <span lang="NEXT_BTN"></span> &rarr;
+                </a>
+            
+        </div>
+        
+        <br/>
+        <hr>
+
+        
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    
+    var disqus_developer = 1;
+    var disqus_shortname = 'theron'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+    </div>
+    <div class="col m4 hide-on-small-only">
+        <div class="card blue-grey darken-1 z-depth-2">
+            <div class="card-content white-text">
+              <span class="card-title">[ Android ] Interprator</span>
+            </div>
+            <div class="card-action blue-grey lighten-4">
+                <span lang="CREATED_ON"></span> 2015-08-02
+            </div>
+        </div>
+
+        <div class="card-panel grey lighten-5 z-depth-2">
+            <div class="row valign-wrapper">
+                <div class="col s12">
+                    <i class="fa fa-server fa-lg grey-text text-darken-4"></i>&nbsp;&nbsp;<strong class="grey-text text-darken-4" lang="CATEGORIES"></strong>
+                    <hr>
+                    
+                      
+                      <a href="/categories.html#android-ref" class="waves-effect waves-light btn tag deep-orange">
+                          android&nbsp;1
+                      </a>
+                      
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="card-panel grey lighten-5 z-depth-2">
+            <div class="row valign-wrapper">
+                <div class="col s12">
+                    <i class="fa fa-flag fa-lg grey-text text-darken-4"></i>&nbsp;&nbsp;<strong class="grey-text text-darken-4" lang="TAGS"></strong>
+                    <hr>
+                    
+                      
+                      <a href="/tags.html#Android-ref" class="waves-effect waves-light btn tag deep-orange">
+                          Android&nbsp;1
+                      </a>
+                      
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+          </div>
+      </main>
+
+      <div class="goto-top hide-on-med-and-down">
+          <i class="fa fa-chevron-up fa-2x"></i>
+      </div>
+
+      <footer class="page-footer" >
+          
+          <div class="container">
+            <div class="row">
+              <div class="col s12">
+                <h5 class="white-text">Useful Links</h5>
+                <a class="btn waves-effect waves-light red lighten-3 left" href="https://github.com/tracytheron" style="text-transform:capitalize;" target="_new">Github
+                </a>
+                <a class="btn waves-effect waves-light green lighten-3 left" href="http://www.androidweekly.cn/" style="text-transform:capitalize;margin-left: 20px;" target="_new">Android Weekly
+                </a>
+                <a class="btn waves-effect waves-light indigo lighten-3 left" href="http://android-arsenal.com/" style="text-transform:capitalize;margin-left: 20px;" target="_new">Android Arsenal
+                </a>
+                <a class="btn waves-effect waves-light blue lighten-3 left" href="http://www.codekk.com/open-source-project-analysis" style="text-transform:capitalize;margin-left: 20px;" target="_new">CodeKK
+                </a>
+                <a class="btn waves-effect waves-light purple dark-3 left" href="http://design.1sters.com/" style="text-transform:capitalize;margin-left: 20px;" target="_new">Material Design(CN)
+                </a>
+                <a class="btn waves-effect waves-light orange dark-3 left" href="http://www.androiddocs.com/" style="text-transform:capitalize;margin-top: 20px;" target="_new">Android Docs(Offcial)
+                </a>
+                <a class="btn waves-effect waves-light brown left" href="https://leetcode.com/" style="text-transform:capitalize;margin-top: 20px;margin-left: 20px;" target="_new">LeetCode OJ
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          <div class="footer-copyright">
+            <div class="container">
+            &copy; 2015 Theron Chu/CHN, All rights reserved. Thanks to Jekyll-Materiallize
+            <a class="grey-text text-lighten-4 right" href="https://github.com/leftstick/jekyll-materiallize/blob/master/LICENSE">MIT License</a>
+            </div>
+          </div>
+      </footer>
+
+      
+
+
+
+      <!-- Placed at the end of the document so the pages load faster -->
+      <script src="/assets/themes/materiallize/js/jquery-2.1.3.min.js"></script>
+      <script src="/assets/themes/materiallize/js/materialize.min.js"></script>
+      <script src="/assets/themes/materiallize/js/jquery.tooltipster.min.js"></script>
+      <script src="/assets/themes/materiallize/js/prism.js"></script>
+      <script src="/assets/themes/materiallize/js/prism.clojure.js"></script>
+      <script src="/assets/lang/lang.js"></script>
+      <script src="/assets/themes/materiallize/js/init.js"></script>
+  </body>
+</html>
+
