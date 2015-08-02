@@ -35,7 +35,7 @@ Animation在设置了TimeInterpolator，开始startAnimation之后，Animation�
 
 怎么样？看上去是不是很复杂？很厉害的样子。我跟着这个函数做了几下呼吸，感觉这个呼吸函数还是挺靠谱的。那我们就动手吧。
 
-我们知道实现TimeInterpolator接口，必须实现这个方法 float getInterpolation(float input);input的在动画的时间内，返回平均地0-1的float值，我们所要做的就是将这个input值和我们的函数对应起来。
+我们知道实现TimeInterpolator接口，必须实现这个方法 float getInterpolation(float input)；input值在动画的时间内，平均地返回0~1的float值，我们所要做的就是将这个input值和我们的函数对应起来。
 
 呼吸函数分为两部分，吸气和呼气，即y坐标0~1的递增和y坐标1~0的递减。这个函数和正弦函数sin很像，正如drakeet所说，如果用正弦函数来表述呼吸，那这个呼吸就有些急促，大家可以呼吸试一下。因此，吸气时间相对较短，大约占整个一个呼吸周期的1/3,而呼气则占2/3。所以，我们的input值中，0~1/3交给吸气函数，1/3~1交给呼气函数。
 
