@@ -1,0 +1,605 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+    <title>I AM YOUNG</title>
+
+    
+
+    <meta name="author" content="Theron Chu/CHN">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimal-ui"/>
+
+    
+    <base href="/">
+    
+
+    <!-- materiallize styles -->
+    <link href="/assets/themes/materiallize/css/materialize.min.css" rel="stylesheet">
+    <!-- fontawesome styles -->
+    <link href="/assets/themes/materiallize/css/font-awesome.min.css" rel="stylesheet">
+    <!-- tooltipster styles -->
+    <link href="/assets/themes/materiallize/css/tooltipster.css" rel="stylesheet">
+    <!-- prism styles -->
+    <link href="/assets/themes/materiallize/css/prism.css" rel="stylesheet">
+    
+    <!-- Custom styles -->
+    <link href="/assets/themes/materiallize/css/style.css" rel="stylesheet" type="text/css" media="all">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="/assets/themes/materiallize/js/html5shiv.js"></script>
+      <script src="/assets/themes/materiallize/js/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <link rel="shortcut icon" href="/assets/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/assets/images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/assets/images/apple-touch-icon-114x114.png">
+    
+    <!-- modernizr -->
+    <script type="text/javascript" src="/assets/themes/materiallize/js/modernizr.js"></script>
+
+  </head>
+
+  <body>
+
+      <nav class="light-blue lighten-1" role="navigation">
+          <div class="nav-wrapper container">
+              <a id="logo-container" href="/" class="brand-logo">I AM YOUNG</a>
+              <ul class="right hide-on-med-and-down">
+                  
+                  
+                  
+
+
+  
+    
+  
+    
+      
+          
+          <li><a href="/index.html" lang="HOME"></a></li>
+          
+      
+    
+  
+    
+      
+          
+          <li><a href="/archive.html" lang="ARCHIVE"></a></li>
+          
+      
+    
+  
+    
+      
+          
+          <li><a href="/categories.html" lang="CATEGORIES"></a></li>
+          
+      
+    
+  
+    
+      
+          
+          <li><a href="/tags.html" lang="TAGS"></a></li>
+          
+      
+    
+  
+
+
+
+              </ul>
+
+              <ul id="nav-mobile" class="side-nav">
+                  
+                  
+                  
+
+
+  
+    
+  
+    
+      
+          
+          <li><a href="/index.html" lang="HOME"></a></li>
+          
+      
+    
+  
+    
+      
+          
+          <li><a href="/archive.html" lang="ARCHIVE"></a></li>
+          
+      
+    
+  
+    
+      
+          
+          <li><a href="/categories.html" lang="CATEGORIES"></a></li>
+          
+      
+    
+  
+    
+      
+          
+          <li><a href="/tags.html" lang="TAGS"></a></li>
+          
+      
+    
+  
+
+
+
+              </ul>
+              <a href="#" data-activates="nav-mobile" class="button-collapse right"><i class="mdi-navigation-menu"></i></a>
+          </div>
+      </nav>
+      
+      <main>
+          <div class="container">
+              
+<div class="row">
+    <div class="col s12 m8">
+        <h2><small>异步消息处理机制</small></h2>
+        
+<p>昨晚看了曼联和热刺的英超揭幕战，最终比分可以接受，对方送大礼，曼联利用乌龙球1:0小胜，创造了英超历史上第一次乌龙开局。曼联夏季引入的几位新员还不错，但还需时日融入球队。<a href="http://baike.baidu.com/view/13319863.htm">Darmian</a>挺牛逼，感觉挺稳的。<a href="http://baike.baidu.com/view/9343445.htm">Depay</a>能力有，潜力大，但不能太急于求成。<a href="http://baike.baidu.com/subview/477708/14768546.htm">Romero</a>有能力，但和后卫之间的默契有待加强，最后几分钟的扑救是对自己的证明。<a href="http://baike.baidu.com/view/4494770.htm">Schneiderlin</a>毕竟混了几年英超了，表现中规中矩。<a href="http://baike.baidu.com/view/456171.htm">Schweinsteiger</a>刚来英超，而且年纪有点大了，动作有点慢，但我想他的经验还是能帮助球队的。挺好挺幸运的开局，加油！Glory Glory ManUnited！</p>
+
+<p>终于可以言归正传了。看了hongyang大神的博客和经过组内的源码分析，自己对Handler、Looper和Message三者的运作流程有了更深的了解。我有时候听着很好，好像懂了，但让我说出来还真有点难度，原因是表达能力不咋地+理解不够深。现在理理思路，写出来，可能理解更深一些。</p>
+
+<blockquote>
+  <p>所谓先由表及里、由浅入深，再回归表象、深入浅出，并伴随生动场景，读起来、理解起来更加容易些。————Theron.Chu</p>
+</blockquote>
+
+<p>小天想把昨天的比赛过程做成一个文字直播，在手机上显示。描述得更加具体些，小天是一个球迷，他打开了我们的应用，看到了文字直播，每隔一段时间，该应用应该更新战况。需求差不多明确了，从技术角度来说，也就是每分钟读取新的战况，显示在屏幕上。</p>
+
+<p>开始动手吧，代码已经饥渴难耐了。</p>
+
+<p>常识已经告诫我们，如果在主UI线程中处理“每隔一段时间，该应用应该更新战况”，那么，该应用就处于时刻卡死状态，用户就不能对该应用的进行其他操作了，所以我们使用异步消息处理。</p>
+
+<p>先看个例子，在代码中我标注了每句的作用</p>
+
+<pre><code>public class MainActivity extends ActionBarActivity {
+    private ListView listView;
+    private MatchAdapter matchAdapter;
+
+    private int count = 0;
+    private static final int UPDATE_MATCH = 200;
+
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message message) {//处理消息
+            if(message.what==UPDATE_MATCH){
+                String newStatus = FakeDataSource.getCurrentStatus(count);//假装从数据库或者网络获得数据
+                if(newStatus!=null){//newStatus不为null,说明比赛未结束
+                    count++;
+                    matchAdapter.setNewStatus(newStatus);//更新UI
+                    mHandler.sendMessageDelayed(obtainMessage(UPDATE_MATCH),2000L);//等待两秒后，再次发送UPDATE_MATCH的消息
+                }
+            }
+        }
+    };
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        initViews();
+        initData();
+        updateMatch();
+    }
+
+    private void initViews() {
+        listView = (ListView) findViewById(R.id.list);
+    }
+
+    private void initData() {
+        matchAdapter = new MatchAdapter(this,new ArrayList&lt;String&gt;());
+        listView.setAdapter(matchAdapter);
+    }
+
+    private void updateMatch(){
+        mHandler.sendEmptyMessage(UPDATE_MATCH);//发送UPDATE_MATCH的消息
+    }
+}
+</code></pre>
+
+<p>上面的代码实现我们的需求，从一波初始化以后，通过mHandler发送一条消息，然后由回调函数handleMessage处理消息，然后根据再次发送消息来达到循环。是时候深入一波了，这个sendEmptyMessage或者sendMessageDelayed到底做了些什么，才会回调handleMessage呢？进入源码。</p>
+
+<p>先看，无论通过handler进行sendEmptyMessage或者sendMessageDelayed，或者还有其他类型的sendMessage，归根结底，都会调用sendMessageAtTime(Message msg, long uptimeMillis)方法。如下：</p>
+
+<pre><code> public boolean sendMessageAtTime(Message msg, long uptimeMillis) {
+    MessageQueue queue = mQueue;
+    if (queue == null) {
+        RuntimeException e = new RuntimeException(
+                this + " sendMessageAtTime() called with no mQueue");
+        Log.w("Looper", e.getMessage(), e);
+        return false;
+    }
+    return enqueueMessage(queue, msg, uptimeMillis);
+}
+</code></pre>
+
+<p>可以看到，首先此方法会先得到一个消息队列，然后将消息通过enqueueMessage方法加入到队列中。那么问题来了，这个队列并不是现场构建的，而是取的mQueue，并且在正常情况下，它一定不为null，也就是说，mQueue在之前的某处已经被创建且不为null了。所以我们继续看这个mQueue是哪儿来的。<br />
+通过查看Handler的源码，发现有以下两处会对mQueue进行赋值，并且，这两处都是在Handler的构造函数中。</p>
+
+<pre><code>public Handler(Callback callback, boolean async) {
+    ...
+
+    mLooper = Looper.myLooper();
+    if (mLooper == null) {
+        throw new RuntimeException(
+            "Can't create handler inside thread that has not called Looper.prepare()");
+    }
+    mQueue = mLooper.mQueue;//此处将mLooper的mQueue赋给Handler的mQueue
+    mCallback = callback;
+    mAsynchronous = async;
+}
+
+ public Handler(Looper looper, Callback callback, boolean async) {
+    mLooper = looper;
+    mQueue = looper.mQueue;//此处将looper的mQueue赋给Handler的mQueue
+    mCallback = callback;
+    mAsynchronous = async;
+}
+</code></pre>
+
+<p>可以看到mQueue这个消息队列，是从Looper中获得，而这个Looper要么是由Looper.myLooper()获得，要么是构造Handler的时候传入的Looper对象。也就是说，在mQueue这个消息队列产生以前，Looper对象就已经产生了。那Looper对象又是什么时候产生的呢？先看Looper.myLooper()方法的源码。</p>
+
+<pre><code>public static Looper myLooper() {
+    return sThreadLocal.get();
+}
+</code></pre>
+
+<p>可见，Looper对象是从sThreadLocal对象中get()出来的，也就是说，在这之前，sThreadLocal对象就已经被set了这个Looper对象。我们继续寻找在什么地方在sThreadLocal上set了Looper对象。于是，我们找到了prepare方法，如下</p>
+
+<pre><code>private static void prepare(boolean quitAllowed) {
+    if (sThreadLocal.get() != null) {
+        throw new RuntimeException("Only one Looper may be created per thread");
+    }        
+    sThreadLocal.set(new Looper(quitAllowed));
+}
+</code></pre>
+
+<p>这个方法首先判断了sThreadLocal中是否已经存在Looper对象，如果没有，就会创建一个Looper给它。从抛出的异常可见，每个Thread只能有一个Looper对象，而prepare也只能被调用一次。那么问题就来了，Looper的prepare方法在哪里被调用。继续搜寻，我们找到了，在ActivityThread类中，我们找到了Looper.prepareMainLooper()，并且，我们发现，该代码处于main函数中，也就是说，这行代码在我们程序启动的时候，就已经调用了。在该main函数的最后，有Looper调用了loop()方法，进入loop()方法，正如其名，循环，而且是一个死循环。但该循环不是就这么循环下去，当消息队列中没有消息的时候，该Looper所处的线程就会处于wait状态，当有新的Message到来，调用notifyAll来唤起线程，继续轮询。</p>
+
+<p>现在我们知道了，我们应用启动的时候，就创建了一个Looper，并在Looper中维护着一个消息队列，通过轮询，从消息队列中取消息。</p>
+
+<p>我们回到刚才的Handler构造函数，第一个构造函数的Looper是我们应用创建的Looper，我们叫它mainLooper，也就是说，我们在使用Handler来进行异步消息处理的时候，不需要再创建Looper和内部的MessageQueue了，即在一般情况下，都是用同一个mainLooper和他维护的mQueue。当然，也有例外，也就是Handler的另一个构造函数，它传递的第一个参数即是Looper对象，我们叫它customLooper，前面的源码提及，一个Looper对应一个Thread，也对应一个Looper维护的MessageQueue，因此，customLooper必定是在另一个Thread中创建的，同时，创建它的时候，必须得手动调用一次prepare方法，并手动调用loop方法将其轮询起来。那么，在这种情况下，由该Handler发出的消息，就有该Handler拥有的Looper来进行轮询，并有该Handler处理消息，和应用为我们创建的mainLooper就没什么关系了。</p>
+
+<p>接下来我们在深入看一下消息是如何轮询的，消息是如何交给handler的handleMessage方法处理的。</p>
+
+<pre><code>public static void loop() {  
+    final Looper me = myLooper();  
+    if (me == null) {  
+        throw new RuntimeException("No Looper; Looper.prepare() wasn't called on this thread.");  
+    }  
+    final MessageQueue queue = me.mQueue;  
+  
+    // Make sure the identity of this thread is that of the local process,  
+    // and keep track of what that identity token actually is.  
+    Binder.clearCallingIdentity();  
+    final long ident = Binder.clearCallingIdentity();  
+  
+    for (;;) {  
+        Message msg = queue.next(); // might block  
+        if (msg == null) {  
+            // No message indicates that the message queue is quitting.  
+            return;  
+        }  
+  
+        // This must be in a local variable, in case a UI event sets the logger  
+        Printer logging = me.mLogging;  
+        if (logging != null) {  
+            logging.println("&gt;&gt;&gt;&gt;&gt; Dispatching to " + msg.target + " " +  
+                    msg.callback + ": " + msg.what);  
+        }  
+  
+        msg.target.dispatchMessage(msg);  
+  
+        if (logging != null) {  
+            logging.println("&lt;&lt;&lt;&lt;&lt; Finished to " + msg.target + " " + msg.callback);  
+        }  
+  
+        // Make sure that during the course of dispatching the  
+        // identity of the thread wasn't corrupted.  
+        final long newIdent = Binder.clearCallingIdentity();  
+        if (ident != newIdent) {  
+            Log.wtf(TAG, "Thread identity changed from 0x"  
+                    + Long.toHexString(ident) + " to 0x"  
+                    + Long.toHexString(newIdent) + " while dispatching to "  
+                    + msg.target.getClass().getName() + " "  
+                    + msg.callback + " what=" + msg.what);  
+        }  
+  
+        msg.recycle();  
+    }  
+} 
+</code></pre>
+
+<p>上面是loop方法的代码，着重要看几行代码。</p>
+
+<p>第一，消息队列从哪儿来。由代码可见，消息队列是Looper自己维护的mQueue。</p>
+
+<p>第二，消息如何分发。由msg.target.dispatchMessage(msg)进行分发，那么问题来了，msg.target又是什么东西呢？在上面的Handler的enqueueMessage(queue, msg, uptimeMillis)方法的源码中，将msg的target设置成this，即Handler本身。也就是说，由哪个handler发出的消息，也由哪个handler来处理。</p>
+
+<p>第三，dispatchMessage(msg)做些什么，进入dispatchMessage源码。</p>
+
+<pre><code>public void dispatchMessage(Message msg) {  
+    if (msg.callback != null) {  //第1种情况
+        handleCallback(msg);  //第1种情况处理
+    } else {  
+        if (mCallback != null) {  //第2种情况
+            if (mCallback.handleMessage(msg)) {  //第2种情况处理
+                return;  
+            }  
+        }  
+        handleMessage(msg);  //第3种情况处理
+    }  
+} 
+</code></pre>
+
+<p>这个方法说明了处理消息的三种情况，分别是msg.callback为不空、mCallback不为空和其他情况，分别调用不同的方式处理，分别为handleCallback(msg)、mCallback.handleMessage(msg)和handleMessage(msg)。</p>
+
+<p>接下来就先说说这三种情况是怎么产生的，这三种情况对应着三种不同的处理异步消息的方式。</p>
+
+<p>第一种方式，那么我们的msg必须有callback属性，我们可以尝试在msg创建的时候设置Callback，但不行，因为Message并不能在创建时设置，而Message只有getCallback方法，并且，从返回值来看，是个Runnable接口。通过Message的源码可以看到在构造Message的时候，使用obtain(Handler h, Runnable callback)方法来传入handler和callback。而这种情况的处理消息方法handleCallback(msg)，其实是调用msg.callback.run()方法，也就是说，其实它是利用Runnable接口来进行回调，和线程没什么关系。那么我们曼联比赛的例子就可以通过下面的方法实现：</p>
+
+<pre><code>public class MainActivity extends Activity {
+    private ListView listView;
+    private MatchAdapter matchAdapter;
+    private Runnable mRunnable;
+
+    private int count = 0;
+
+    private Handler mHandler = new Handler();
+   
+    public class MatchRunnable implements Runnable{
+        @Override
+        public void run() {
+            String newStatus = FakeDataSource.getCurrentStatus(count);//假装从数据库或者网络获得数据
+            if(newStatus!=null){
+                count++;
+                matchAdapter.setNewStatus(newStatus);//更新UI
+                Message msg = Message.obtain(mHandler,mRunnable);
+                mHandler.sendMessageDelayed(msg,2000L);
+            }
+        }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        initViews();
+        initData();
+        initConfig();
+        updateMatch();
+    }
+
+    private void initViews() {
+        listView = (ListView) findViewById(R.id.list);
+    }
+
+    private void initData() {
+        matchAdapter = new MatchAdapter(this,new ArrayList&lt;String&gt;());
+        listView.setAdapter(matchAdapter);
+    }
+
+    private void initConfig() {
+        mRunnable = new MatchRunnable();
+    }
+
+    private void updateMatch(){
+        Message msg = Message.obtain(mHandler,mRunnable);
+        mHandler.sendMessage(msg);
+    }
+}
+</code></pre>
+
+<p>第二种方式，mCallback必须不为null，那mCallback是哪儿来的呢？从Handler的构造函数可以看出，是我们创建Handler的时候设置的一个回调接口。在处理消息时，调用mCallback.handleMessage(msg)方法，即我们在创建Handler的时候，得加入一个有handlerMessage方法的回调接口，即Handler.Callback接口。那么我们曼联比赛的例子就可以通过下面的方法实现：</p>
+
+<pre><code>public class MainActivity extends Activity {
+    private ListView listView;
+    private MatchAdapter matchAdapter;
+
+    private int count = 0;
+
+    private static final int UPDATE_MATCH = 200;
+    private Handler mHandler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message message) {
+            if(message.what==UPDATE_MATCH){
+                String newStatus = FakeDataSource.getCurrentStatus(count);
+                if(newStatus!=null){
+                    count++;
+                    matchAdapter.setNewStatus(newStatus);
+                    mHandler.sendEmptyMessageDelayed(UPDATE_MATCH,2000L);
+                }
+            }
+            return true;
+        }
+    });
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        initViews();
+        initData();
+        updateMatch();
+    }
+
+    private void initViews() {
+        listView = (ListView) findViewById(R.id.list);
+    }
+
+    private void initData() {
+        matchAdapter = new MatchAdapter(this,new ArrayList&lt;String&gt;());
+        listView.setAdapter(matchAdapter);
+    }
+
+    private void updateMatch(){
+        mHandler.sendEmptyMessage(UPDATE_MATCH);
+    }
+}
+</code></pre>
+
+<p>第三种方式，在我们第一段示例代码里，已经使用了，我们并没有设置msg的callback，也没有mCallback回调，直接由handler发消息，由handler的handleMessage(msg)来处理，handleMessage(msg)是一个空方法，需要我们去重写。</p>
+
+<p>好了，Handler、Looper、Message之间的关系和用法基本就说完了。接下来就看一下这场精彩的比赛吧。</p>
+
+<p><img src="https://raw.githubusercontent.com/tracytheron/theron_blog/gh-pages/assets/images/20150809.gif" alt="Match" /></p>
+
+
+
+        <div class="right-align pagination-group">
+            
+                <a href="/android/2015/08/02/%5B-Android-%5D-TimeInterpolator%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E8%87%AA%E5%AE%9A%E4%B9%89" class="btn waves-effect waves-light blue lighten-2" style="border-top-right-radius: 0; border-bottom-right-radius: 0;">
+                    &larr; <span lang="PREVIOUS_BTN"></span>
+                </a>
+            
+                <a href="/archive.html" class="btn waves-effect waves-light blue" style="border-radius: 0;" lang="ARCHIVE_BTN"></a>
+            
+                <a class="btn disabled" style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
+                    <span lang="NEXT_BTN"></span> &rarr;
+                </a>
+            
+        </div>
+        
+        <br/>
+        <hr>
+
+        
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    
+    var disqus_developer = 1;
+    var disqus_shortname = 'theron'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+    </div>
+    <div class="col m4 hide-on-small-only">
+        <div class="card blue-grey darken-1 z-depth-2">
+            <div class="card-content white-text">
+              <span class="card-title">[ Android ] 异步消息处理机制</span>
+            </div>
+            <div class="card-action blue-grey lighten-4">
+                <span lang="CREATED_ON"></span> 2015-08-09
+            </div>
+        </div>
+
+        <div class="card-panel grey lighten-5 z-depth-2">
+            <div class="row valign-wrapper">
+                <div class="col s12">
+                    <i class="fa fa-server fa-lg grey-text text-darken-4"></i>&nbsp;&nbsp;<strong class="grey-text text-darken-4" lang="CATEGORIES"></strong>
+                    <hr>
+                    
+                      
+                      <a href="/categories.html#algorithms-ref" class="waves-effect waves-light btn tag deep-orange">
+                          algorithms&nbsp;1
+                      </a>
+                      
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="card-panel grey lighten-5 z-depth-2">
+            <div class="row valign-wrapper">
+                <div class="col s12">
+                    <i class="fa fa-flag fa-lg grey-text text-darken-4"></i>&nbsp;&nbsp;<strong class="grey-text text-darken-4" lang="TAGS"></strong>
+                    <hr>
+                    
+                      
+                      <a href="/tags.html#Android-ref" class="waves-effect waves-light btn tag deep-orange">
+                          Android&nbsp;2
+                      </a>
+                      
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+          </div>
+      </main>
+
+      <div class="goto-top hide-on-med-and-down">
+          <i class="fa fa-chevron-up fa-2x"></i>
+      </div>
+
+      <footer class="page-footer" >
+          
+          <div class="container">
+            <div class="row">
+              <div class="col s12">
+                <h5 class="white-text">Useful Links</h5>
+                <a class="btn waves-effect waves-light red lighten-3 left" href="https://github.com/tracytheron" style="text-transform:capitalize;" target="_new">Github
+                </a>
+                <a class="btn waves-effect waves-light green lighten-3 left" href="http://www.androidweekly.cn/" style="text-transform:capitalize;margin-left: 20px;" target="_new">Android Weekly
+                </a>
+                <a class="btn waves-effect waves-light indigo lighten-3 left" href="http://android-arsenal.com/" style="text-transform:capitalize;margin-left: 20px;" target="_new">Android Arsenal
+                </a>
+                <a class="btn waves-effect waves-light blue lighten-3 left" href="http://www.codekk.com/open-source-project-analysis" style="text-transform:capitalize;margin-left: 20px;" target="_new">CodeKK
+                </a>
+                <a class="btn waves-effect waves-light purple dark-3 left" href="http://design.1sters.com/" style="text-transform:capitalize;margin-left: 20px;" target="_new">Material Design(CN)
+                </a>
+                <a class="btn waves-effect waves-light orange dark-3 left" href="http://www.androiddocs.com/" style="text-transform:capitalize;margin-top: 20px;" target="_new">Android Docs(Offcial)
+                </a>
+                <a class="btn waves-effect waves-light brown left" href="https://leetcode.com/" style="text-transform:capitalize;margin-top: 20px;margin-left: 20px;" target="_new">LeetCode OJ
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          <div class="footer-copyright">
+            <div class="container">
+            &copy; 2015 Theron Chu/CHN, All rights reserved. Thanks to Jekyll-Materiallize
+            <a class="grey-text text-lighten-4 right" href="https://github.com/leftstick/jekyll-materiallize/blob/master/LICENSE">MIT License</a>
+            </div>
+          </div>
+      </footer>
+
+      
+
+
+
+      <!-- Placed at the end of the document so the pages load faster -->
+      <script src="/assets/themes/materiallize/js/jquery-2.1.3.min.js"></script>
+      <script src="/assets/themes/materiallize/js/materialize.min.js"></script>
+      <script src="/assets/themes/materiallize/js/jquery.tooltipster.min.js"></script>
+      <script src="/assets/themes/materiallize/js/prism.js"></script>
+      <script src="/assets/themes/materiallize/js/prism.clojure.js"></script>
+      <script src="/assets/lang/lang.js"></script>
+      <script src="/assets/themes/materiallize/js/init.js"></script>
+  </body>
+</html>
+
